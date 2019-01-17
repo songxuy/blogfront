@@ -1,0 +1,122 @@
+<template>
+    <div class="settings-main card">
+        <div class="settings-main-content">
+            <a-input title="标题">
+                <input type="text" v-model="form.title" placeholder="标题" class="base-input" name="title">
+                <span class="input-info error">请输入标题</span>
+            </a-input>
+            <a-input title="分类" :classes="'select-item-wrap'">
+                <i class="icon icon-arrow-down"></i>
+                <select v-model="form.category" class="select-item" name="category">
+                    <option value="">请选择分类</option>
+                    <option v-for="item in category" :key="item._id" :value="item._id + '|' + item.cate_name">{{ item.cate_name }}</option>
+                </select>
+                <span class="input-info error">请输入分类</span>
+            </a-input>
+            <div class="settings-section">
+                <div id="post-content" class="settings-item-content">
+                    <textarea id="editor" name="content" class="form-control hidden" data-autosave="editor-content"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="settings-footer clearfix">
+            <a @click="insert" href="javascript:;" class="btn btn-yellow">添加文章</a>
+        </div>
+    </div>
+</template>
+
+<script>
+/* global postEditor */
+import { mapGetters } from 'vuex'
+import { showMsg } from '~utils'
+// import api from '~api'
+import checkAdmin from '~mixins/check-admin'
+import aInput from '../components/_input.vue'
+
+export default {
+    name: 'backend-article-insert',
+    components: {
+        aInput
+    },
+    mixins: [checkAdmin],
+    async asyncData({ store, route }, config = { limit: 99 }) {
+        config.all = 1
+        await store.dispatch('global/category/getCategoryList', {
+            ...config,
+            path: route.path
+        })
+    },
+    data() {
+        return {
+            form: {
+                title: '',
+                category: '',
+                content: ''
+            }
+        }
+    },
+    computed: {
+        ...mapGetters({
+            category: 'global/category/getCategoryList'
+        })
+    },
+    mounted() {
+        // eslint-disable-next-line
+        window.postEditor = editormd('post-content', {
+            width: '100%',
+            height: 500,
+            markdown: '',
+            placeholder: '请输入内容...',
+            path: '/static/editor.md/lib/',
+            toolbarIcons() {
+                return [
+                    'bold',
+                    'italic',
+                    'quote',
+                    '|',
+                    'list-ul',
+                    'list-ol',
+                    'hr',
+                    '|',
+                    'link',
+                    'reference-link',
+                    'image',
+                    'code',
+                    'table',
+                    '|',
+                    'watch',
+                    'preview',
+                    'fullscreen'
+                ]
+            },
+            watch: false,
+            saveHTMLToTextarea: true
+        })
+    },
+    methods: {
+        async insert() {
+            const content = postEditor.getMarkdown()
+            if (!this.form.title || !this.form.category || !content) {
+                showMsg('请将表单填写完整!')
+                return
+            }
+            this.form.content = content
+            const { code, data, message } = await this.$store.$api.post('backend/article/insert', this.form)
+            if (code === 200) {
+                showMsg({
+                    type: 'success',
+                    content: message
+                })
+                this.$store.commit('backend/article/insertArticleItem', data)
+                this.$router.push('/backend/article/list')
+            }
+        }
+    },
+    metaInfo() {
+        return {
+            title: '发布文章 - M.M.F 小屋',
+            meta: [{ vmid: 'description', name: 'description', content: 'M.M.F 小屋' }]
+        }
+    }
+}
+</script>

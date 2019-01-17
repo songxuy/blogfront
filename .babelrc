@@ -1,0 +1,7 @@
+{
+    "presets": ["@vue/app"],
+    "plugins": [
+        "jsx-v-model",
+        "vue-jsx-sync"
+    ]
+}
