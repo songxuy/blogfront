@@ -43,7 +43,7 @@ const guardRoute = (to, from, next) => {
         next()
     }
 }
-export function createRouter() {
+/* export function createRouter() {
     const router = new VueRouter({
         mode: 'history',
         base: __dirname,
@@ -136,4 +136,4 @@ export function createRouter() {
         ]
     })
     return router
-}
+} */
