@@ -1,12 +1,15 @@
 <!-- borrowed from Nuxt! -->
 
 <template>
-    <div class="progress" :style="{
-        'width': percent + '%',
-        'height': height,
-        'background-color': canSuccess ? color : failedColor,
-        'opacity': show ? 1 : 0
-    }"></div>
+    <div
+        class="progress"
+        :style="{
+            width: percent + '%',
+            height: height,
+            'background-color': canSuccess ? color : failedColor,
+            opacity: show ? 1 : 0
+        }"
+    ></div>
 </template>
 
 <script>
@@ -19,7 +22,7 @@ export default {
             canSuccess: true,
             duration: 3000,
             height: '2px',
-            color: '#ffca2b',
+            color: '#007fff',
             failedColor: '#ff0000'
         }
     },
@@ -97,7 +100,7 @@ export default {
     width: 0;
     /* transition width .2s, opacity .4s; */
     opacity: 1;
-    background-color: #efc14e;
+    background-color: #007fff;
     z-index: 999999;
 }
 </style>

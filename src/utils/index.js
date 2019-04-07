@@ -2,7 +2,7 @@ import Vue from 'vue'
 import ls from 'store2'
 import toastr from 'toastr'
 
-toastr.options.positionClass = 'toast-top-center'
+toastr.options.positionClass = 'toast-top-right'
 
 export const inBrowser = typeof window !== 'undefined'
 

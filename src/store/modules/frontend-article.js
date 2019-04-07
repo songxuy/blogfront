@@ -79,6 +79,13 @@ const mutations = {
             isLoad: true
         }
     },
+    ['changeArticleItem'](state) {
+        if (state.item.data.isGz == -1) {
+            state.item.data.isGz = 1
+        } else {
+            state.item.data.isGz = -1
+        }
+    },
     ['receiveTrending'](state, data) {
         state.trending = data.list
     },

@@ -2,6 +2,8 @@ import axios from 'axios'
 import qs from 'qs'
 import config from './config-client'
 import { showMsg } from '~utils'
+axios.defaults.withCredentials = true
+axios.defaults.crossDomain = true
 
 axios.interceptors.request.use(
     config => {

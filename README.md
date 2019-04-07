@@ -1,4 +1,4 @@
-# mmf-blog vuejs 2.0 v2         [中文说明](https://github.com/songxuy/blogfront/master/README_CN.md)
+# mmf-blog vuejs 2.0 v2         [中文说明](https://github.com/lincenying/mmf-blog-vue2/blob/master/README_CN.md)
 
 demo: [http://vue2.mmxiaowu.com](http://vue2.mmxiaowu.com)
 
@@ -53,6 +53,13 @@ Because ` babelrc ` configuration
         }
     }]
 ]
+
+,
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
 ```
 So, in the development environment, please use chrome52 + open, if you need other low browser version, please modify the root directory of the `.Babelrc ` file
 

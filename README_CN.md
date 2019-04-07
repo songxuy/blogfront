@@ -13,13 +13,7 @@ demo: [http://vue2.mmxiaowu.com](http://vue2.mmxiaowu.com)
 主要技术栈: vue2, vue2-router, vuex, webpack, babel, eslint
 
 ---
-```
-"husky": {
-    "hooks": {
-       "pre-commit": "lint-staged"
-    }
-  }
-```
+
 #### 其他版本
 
 react spa版本: [https://github.com/lincenying/mmf-blog-react-v2](https://github.com/lincenying/mmf-blog-react-v2)

@@ -16,3 +16,11 @@ export default {
     props: ['title', 'classes']
 }
 </script>
+<style>
+.settings-section .settings-item.with-input .settings-title {
+    width: 120px;
+}
+.settings-section .settings-item .settings-item-content {
+    margin-left: 120px;
+}
+</style>

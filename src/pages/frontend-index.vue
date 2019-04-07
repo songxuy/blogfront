@@ -4,7 +4,13 @@
             <div class="home-feeds cards-wrap">
                 <!-- <topics-item-none v-if="!topics.path">加载中, 请稍等...</topics-item-none> -->
                 <div v-if="!topics.path" class="card card-content-loader">
-                    <content-loader :height="160" :width="660" :speed="2" primaryColor="#f3f3f3" secondaryColor="#ecebeb">
+                    <content-loader
+                        :height="160"
+                        :width="660"
+                        :speed="2"
+                        primaryColor="#f3f3f3"
+                        secondaryColor="#ecebeb"
+                    >
                         <rect x="70" y="15" rx="4" ry="4" width="117" height="6.4" />
                         <rect x="70" y="35" rx="3" ry="3" width="85" height="6.4" />
                         <rect x="0" y="80" rx="3" ry="3" width="550" height="6.4" />
@@ -17,7 +23,8 @@
                 <template v-else-if="topics.data.length > 0">
                     <topics-item v-for="item in topics.data" :item="item" :key="item._id"></topics-item>
                     <div class="load-more-wrap">
-                        <a v-if="topics.hasNext" @click="loadMore()" href="javascript:;" class="load-more">更多
+                        <a v-if="topics.hasNext" @click="loadMore()" href="javascript:;" class="load-more"
+                            >更多
                             <i class="icon icon-circle-loading"></i>
                         </a>
                     </div>
@@ -26,7 +33,15 @@
             </div>
         </div>
         <div class="main-right">
-            <category :category="category"></category>
+            <div class="adver">
+                <!-- <img src="../assets/images/adver.jpg" /> -->
+                <el-carousel trigger="click" height="150px">
+                    <el-carousel-item v-for="(item, index) in imglist" :key="index">
+                        <a @click="to(item.src)"><img :src="item.srcimg"/></a>
+                    </el-carousel-item>
+                </el-carousel>
+            </div>
+            <category :category="category.slice(0, 5)"></category>
             <trending :trending="trending"></trending>
         </div>
     </div>
@@ -40,9 +55,22 @@ import topicsItem from '../components/topics-item.vue'
 import topicsItemNone from '../components/topics-item-none.vue'
 import category from '../components/aside-category.vue'
 import trending from '../components/aside-trending.vue'
-
+import axios from 'axios'
 export default {
     name: 'frontend-index',
+    components: {
+        ContentLoader,
+        topicsItem,
+        topicsItemNone,
+        category,
+        trending
+    },
+    mixins: [metaMixin],
+    data() {
+        return {
+            imglist: []
+        }
+    },
     async asyncData({ store, route }, config = { page: 1 }) {
         const {
             params: { id, key, by },
@@ -54,14 +82,25 @@ export default {
             store.dispatch('frontend/article/getArticleList', { ...config, limit: 10, id, path, key, by })
         ])
     },
-    components: {
-        ContentLoader,
-        topicsItem,
-        topicsItemNone,
-        category,
-        trending
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            // 通过 `vm` 访问组件实例
+            //vm.$nextTick().then(() => {
+            if (to.path !== from.path) vm.$options.asyncData({ store: vm.$store, route: to })
+            //})
+        })
     },
-    mixins: [metaMixin],
+    beforeRouteUpdate(to, from, next) {
+        if (to.path !== from.path) this.$options.asyncData({ store: this.$store, route: to })
+        next()
+    },
+    mounted() {
+        var that = this
+        axios.post('/api/frontend/user/adver').then(res => {
+            that.imglist = res.data.data.src
+            console.log(that.imglist)
+        })
+    },
     computed: {
         ...mapGetters({
             topics: 'frontend/article/getArticleList',
@@ -73,6 +112,10 @@ export default {
         this.loadMore(1)
     },
     methods: {
+        to(src) {
+            window.open(src, '_black')
+            //location.href=src
+        },
         async loadMore(page = this.topics.page + 1) {
             this.$loading.start()
             await this.$options.asyncData({ store: this.$store, route: this.$route }, { page })
@@ -99,3 +142,17 @@ export default {
     }
 }
 </script>
+<style scoped>
+.main-right > .adver {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+.main-right > .adver img {
+    width: 100%;
+    position: relative;
+}
+.main-right > .adver img:hover {
+    cursor: pointer;
+}
+</style>

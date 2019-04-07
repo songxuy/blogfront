@@ -20,10 +20,16 @@ import ProgressBar from '@/components/ProgressBar.vue'
 import './assets/css/hljs/googlecode.css'
 import './assets/less/style.less'
 import 'toastr/build/toastr.css'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+/* import hljs from 'highlight.js' */
+/* import iView from 'iview';
+import 'iview/dist/styles/iview.css'; */
 
 Vue.use(VueBus)
 Vue.mixin(titleMixin)
-
+Vue.use(ElementUI)
+/* Vue.use(iView); */
 const loading = (Vue.prototype.$loading = new Vue(ProgressBar).$mount())
 document.body.appendChild(loading.$el)
 
@@ -31,6 +37,12 @@ Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 })
 
+/* Vue.directive('highlight', el => {
+    const blocks = el.querySelectorAll('pre code')
+    blocks.forEach(block => {
+        hljs.highlightBlock(block)
+    })
+}) */
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

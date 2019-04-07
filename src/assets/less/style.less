@@ -45,11 +45,11 @@ a {
     margin-top: 20px;
     padding-bottom: 40px;
     .main-left {
-        width: 660px;
+        width: 700px;
         float: left;
     }
     .main-right {
-        width: 320px;
+        width: 280px;
         float: left;
         margin-left: 20px;
     }
@@ -90,6 +90,9 @@ a {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     position: relative;
     display: block;
+    &.card-content-loader {
+        padding: 20px;
+    }
     &+.cards-wrap, &+.card {
         margin-top: 10px;
     }
@@ -625,6 +628,7 @@ a:hover .icon-arrow-right {
     }
     .select-item {
         width: 100%;
+        margin:0 auto;
         line-height: 44px;
         cursor: pointer;
         -webkit-appearance: none;
@@ -771,7 +775,7 @@ a:hover .icon-arrow-right {
 
 /* fix */
 .editormd {
-    z-index: 1000;
+    z-index: 10;
     .CodeMirror {
         border-radius: 5px;
     }

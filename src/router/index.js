@@ -3,7 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Meta from 'vue-meta'
 import cookies from 'js-cookie'
-
+import { showMsg } from '~utils'
 import { inBrowser } from '../utils'
 
 Vue.use(VueRouter)
@@ -89,6 +89,7 @@ const index = () => import(/* webpackChunkName: "frontend-topics" */ '../pages/f
 const guardRoute = (to, from, next) => {
     var token = cookies.get('user') || !inBrowser
     if (!token) {
+        showMsg('请先登录!')
         next('/')
     } else {
         next()
@@ -112,9 +113,23 @@ export function createRouter() {
                 component: index
             },
             {
+                name: 'insert',
+                path: '/insert',
+                component: () =>
+                    import(/* webpackChunkName: "frontend-about" */ '../pages/frontend-insert-artical.vue'),
+                meta: { scrollToTop: true }
+            },
+            {
+                name: 'center',
+                path: '/center',
+                component: () => import(/* webpackChunkName: "frontend-about" */ '../pages/frontend-home.vue'),
+                meta: { scrollToTop: true }
+            },
+            {
                 name: 'category',
                 path: '/category/:id',
-                component: index
+                component: index,
+                meta: { scrollToTop: true, notKeepAlive: true }
             },
             {
                 name: 'search',
@@ -131,7 +146,8 @@ export function createRouter() {
                 name: 'about',
                 path: '/about',
                 component: () => import(/* webpackChunkName: "frontend-about" */ '../pages/frontend-about.vue'),
-                meta: { scrollToTop: true }
+                meta: { scrollToTop: true },
+                beforeEnter: guardRoute
             },
             {
                 name: 'account',
